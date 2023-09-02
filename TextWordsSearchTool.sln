@@ -1,0 +1,40 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TextWordsSearch.Library", "TextWordsSearch.Library\TextWordsSearch.Library.csproj", "{1418D181-CFAF-481B-90DF-0E37E74541B7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TextWordsSearch.Testing", "TextWordsSearch.Testing\TextWordsSearch.Testing.csproj", "{44F1DD8C-82CE-434A-B3D5-D9268F84A8A1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TextWordsSearch.App.CLI", "TextWordsSearch.App.CLI\TextWordsSearch.App.CLI.csproj", "{59ED13C9-D12D-44B5-98B0-4E163965F1C7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TextWordsSearch.App.Web", "TextWordsSearch.App.Web\TextWordsSearch.App.Web.csproj", "{57C8475B-5F43-4B64-9188-1F5EBD9B7575}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1418D181-CFAF-481B-90DF-0E37E74541B7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1418D181-CFAF-481B-90DF-0E37E74541B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1418D181-CFAF-481B-90DF-0E37E74541B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1418D181-CFAF-481B-90DF-0E37E74541B7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{44F1DD8C-82CE-434A-B3D5-D9268F84A8A1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{44F1DD8C-82CE-434A-B3D5-D9268F84A8A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{44F1DD8C-82CE-434A-B3D5-D9268F84A8A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{44F1DD8C-82CE-434A-B3D5-D9268F84A8A1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{59ED13C9-D12D-44B5-98B0-4E163965F1C7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{59ED13C9-D12D-44B5-98B0-4E163965F1C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{59ED13C9-D12D-44B5-98B0-4E163965F1C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{59ED13C9-D12D-44B5-98B0-4E163965F1C7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{57C8475B-5F43-4B64-9188-1F5EBD9B7575}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{57C8475B-5F43-4B64-9188-1F5EBD9B7575}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{57C8475B-5F43-4B64-9188-1F5EBD9B7575}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{57C8475B-5F43-4B64-9188-1F5EBD9B7575}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

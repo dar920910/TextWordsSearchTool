@@ -1,2 +1,8 @@
 # TextWordsSearchTool
-Text Words Search Tool
+
+This repository contains the following projects:
+
+- "TextWordsSearch.Library"
+- "TextWordsSearch.Testing"
+- "TextWordsSearch.App.CLI"
+- "TextWordsSearch.App.Web"
