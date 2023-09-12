@@ -8,7 +8,8 @@
 
 		public TextViewer(string dataTextFilePath)
 		{
-			_LogWriter = new StreamWriter(Path.Combine(Directory.GetCurrentDirectory(), "text_viewer.log"));
+			_LogWriter = new StreamWriter(
+				Path.Combine(Directory.GetCurrentDirectory(), $"results.log"));
 
 			if (File.Exists(dataTextFilePath))
 			{
@@ -19,11 +20,6 @@
 			{
 				_LogWriter.WriteLine($"[{DateTime.Now}] ERROR: File {dataTextFilePath} was not detected!");
 			}
-		}
-
-		~TextViewer()
-		{
-			_LogWriter.Close();
 		}
 
 		public void ReadFileContent()
@@ -37,6 +33,7 @@
 
 			(string Value, int Count) resultSuperWord = FindSuperWord(detectedTextWords);
 			OutputSuperWord(resultSuperWord);
+			_LogWriter.Close();
 		}
 
 
@@ -136,7 +133,8 @@
 		private void OutputSuperWord((string Value, int Count) super)
 		{
 			_LogWriter.WriteLine(GetOutputTextDelimiter());
-			_LogWriter.WriteLine($"\n[{DateTime.Now}] INFO: SuperWord: '{super.Value}' | Count: {super.Count}.\n");
+			string outputResult = $"\n[{DateTime.Now}] INFO: SuperWord: '{super.Value}' | Count: {super.Count}.\n";
+			_LogWriter.WriteLine(outputResult);
 		}
 
 		private static string GetOutputTextDelimiter()
