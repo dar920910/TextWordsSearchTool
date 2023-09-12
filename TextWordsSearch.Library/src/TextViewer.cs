@@ -32,109 +32,62 @@
 
 			string[] arrTextLoremIpsum = File.ReadAllLines(_FilePath);
 
-			FileResult.OutputTextLoremIpsum(arrTextLoremIpsum);
+			OutputAllDataFromTextFile(arrTextLoremIpsum);
 
 			string[] arrWordsLoremIpsum = new WordConstructor().WordFinder(arrTextLoremIpsum);
 
 			SuperWord resultSuperWord = new WordCalculator().CalculateSuperWord(arrWordsLoremIpsum);
 
-			FileResult.OutputSuperWord(resultSuperWord);
+			OutputSuperWord(resultSuperWord);
 		}
-	}
 
-	/// <summary>
-	/// dar920910: Класс FileResult выполняет функции вывода результатов
-	/// произведенных вычислений во время выполнения программы.
-	/// </summary>
-	public class FileResult
-	{
-		/// <summary>
-		/// dar920910: Метод OutputTextLoremIpsum() создан для вывода 
-		/// проверки прочитанных данных в консоль:
-		/// </summary>
-		/// <param name="destArrStringText">Целевой массив строк текста</param>
-		public static void OutputTextLoremIpsum(string[] destArrStringText)
+		private void OutputAllDataFromTextFile(string[] dataStringsFromTextFile)
 		{
-			OutputTestLine();
+			_LogWriter.WriteLine(GetOutputTextDelimiter());
+			_LogWriter.WriteLine($"\n[{DateTime.Now}] INFO: Text Data from the Loaded File:\n");
 
-			Console.WriteLine("\nВыводим исходный текст Lorem Ipsum, прочитанный программой:\n\n\n");
-
-			foreach (var strText in destArrStringText)
+			foreach (string dataString in dataStringsFromTextFile)
 			{
-				Console.WriteLine(strText);
+				_LogWriter.WriteLine(dataString);
 			}
 		}
 
-		/// <summary>
-		/// dar920910: Метод OutputWords() создан для вывода 
-		/// массива слов в консоль:
-		/// </summary>
-		/// <param name="destArrStringText">Массив слов, предназначенный для вывода</param>
-		public static void OutputWords(string[] destArrWords)
+		private void OutputWords(string[] detectedTextWords)
 		{
-			OutputTestLine();
+			_LogWriter.WriteLine(GetOutputTextDelimiter());
+			_LogWriter.WriteLine($"\n[{DateTime.Now}] INFO: Detected Text Words in the Loaded File:\n");
 
-			Console.WriteLine("\nВыводим каждый элемент массива слов исходного текста Lorem Ipsum:\n\n\n");
-
-			for (int i = 0; i < destArrWords.Length; i++)
+			for (int i = 0; i < detectedTextWords.Length; i++)
 			{
-				Console.WriteLine("   i = " + i + " : " + "res[i] = " + destArrWords[i]);
+				_LogWriter.WriteLine($"   i = {i}: {detectedTextWords[i]}");
 			}
 
-			Console.WriteLine();
+			_LogWriter.WriteLine();
 		}
 
-		/// <summary>
-		/// dar920910: Метод OutputCountWords() создан для вывода в консоль информации о
-		/// количестве каждого слова в тексте:
-		/// </summary>
-		/// <param name="destWord">Массив слов</param>
-		/// <param name="destCount">Массив количества вхождений каждого слова</param>
-		public static void OutputCountWords(string[] destArrWords, int[] destCount)
+		private void OutputCountWords(string[] detectedTextWords, int[] detectedTextWordsCount)
 		{
-			OutputTestLine();
+			_LogWriter.WriteLine(GetOutputTextDelimiter());
+			_LogWriter.WriteLine($"\n[{DateTime.Now}] INFO: Count of Text Words from the Loaded File:\n");
 
-			Console.WriteLine("\nВыводим каждый элемент массива слов и количество его вхождений в исходном тексте:\n\n\n");
-
-			// Выполняем циклический обход каждого элемента массива слов:
-
-			for(int i = 0; i < destArrWords.Length; i++)
-			{			
-				// Вывод текущего слова, преобразованного в верхний регистр (согласно заданию):
-				Console.WriteLine(" Слово: " + destArrWords[i].ToUpper());
-				// Вывод количества вхождений данного слова в тексте, вычисленного в вызывающем коде:
-				Console.WriteLine("   Количество вхождений: встречается ровно " + destCount[i] + " раз в тексте.\n");
+			for(int i = 0; i < detectedTextWords.Length; i++)
+			{
+				_LogWriter.WriteLine($"   Word: {detectedTextWords[i].ToUpper()} | Count: {detectedTextWordsCount[i]}");
 			}
-			
 		}
 
-		/// <summary>
-		/// dar920910: Метод OutputSuperWord() создан для вывода в консоль "супер-слова":
-		/// </summary>
-		/// <param name="super">Структура, содержащая поля описания "супер-слова"</param>
-		public static void OutputSuperWord(SuperWord super)
+		private void OutputSuperWord(SuperWord super)
 		{
-			OutputTestLine();
-
-			// Результирующий вывод "супер-слова" и его рекордного количества вхождений в тексте:
-			Console.WriteLine("\nСамое частое слово в тексте: " + super.curWord + ". Это слово встречается " + super.curCount + " раз.\n");
+			_LogWriter.WriteLine(GetOutputTextDelimiter());
+			_LogWriter.WriteLine($"\n[{DateTime.Now}] INFO: SuperWord: '{super.curWord}' | Count: {super.curCount}.\n");
 		}
 
-		/// <summary>
-		/// dar920910: Метод OutputTestLine() выводит в окне консоли тестовый разделитель
-		/// в целях улучшения наглядности выводимой информации.
-		/// </summary>
-		private static void OutputTestLine()
+		private static string GetOutputTextDelimiter()
 		{
-			int test = 100; // величина тестового разделителя
-			char ch = '='; // символ тестового разделителя
+			const byte delimiterSize = 100;
+			const char delimiterChar = '=';
 
-			Console.WriteLine();
-
-			for (int i = 0; i < test; i++)
-				Console.Write(ch);
-
-			Console.WriteLine();
+			return new string(delimiterChar, delimiterSize);
 		}
 	}
 
@@ -169,11 +122,6 @@
 			 * преобразованной строки, которая является результатом обработки подстроки destStrArr,
 			 * возвращенным при вызове метода ToDoWordsV1().
 			 * 
-			 * ПРИМЕЧАНИЕ для работодателя:
-			 * 
-			 * В реальном проекте мой выбор остановился бы на регулярных выражениях Regex.
-			 * Однако пока что я редко ими пользуюсь, поэтому предпочел более примитивный способ.
-			 * 
 			 */
 
 			foreach (var destStr in destStrArr) result += ToDoWordsV1(destStr);
@@ -188,10 +136,6 @@
 			 */
 
 			string[] res = result.Split('\n');
-
-			// Вывод в консоль массива слов:
-			FileResult.OutputWords(res);
-
 			return res;
 		}
 
@@ -312,9 +256,6 @@
 				}
 			}
 
-			// Вывод текущего слова и количества его вхождений в текст:
-			FileResult.OutputCountWords(arrWords, arrCount);
-			
 			return currentSuperWord;
 		}
 	}
