@@ -29,17 +29,54 @@
 		public void ReadFileContent()
 		{
 			_LogWriter.WriteLine($"[{DateTime.Now}] INFO: Start reading data from the text file ...");
+			string[] dataStringsFromTextFile = File.ReadAllLines(_FilePath);
+			OutputAllDataFromTextFile(dataStringsFromTextFile);
 
-			string[] arrTextLoremIpsum = File.ReadAllLines(_FilePath);
+			string[] detectedTextWords = FindAllTextWords(dataStringsFromTextFile);
+			OutputWords(detectedTextWords);
 
-			OutputAllDataFromTextFile(arrTextLoremIpsum);
-
-			string[] arrWordsLoremIpsum = new WordConstructor().WordFinder(arrTextLoremIpsum);
-
-			SuperWord resultSuperWord = new WordCalculator().CalculateSuperWord(arrWordsLoremIpsum);
-
+			SuperWord resultSuperWord = new WordCalculator().CalculateSuperWord(detectedTextWords);
 			OutputSuperWord(resultSuperWord);
 		}
+
+
+		private static string[] FindAllTextWords(string[] dataStringsFromTextFile)
+		{
+			string result = string.Empty;
+
+			foreach (string dataString in dataStringsFromTextFile)
+			{
+				result += GetSubstringWithTextWords(dataString);
+			}
+
+			return result.Split('\n');
+		}
+
+		private static string GetSubstringWithTextWords(string subString)
+		{
+			char[] targetSymbols = 
+			{
+				'.', ',', ':', ';',
+				'!', '?', '%', '$',
+				'#', '@', '&', '~',
+				'*', '/', '+', '/',
+				'\\', '|', '^', '"', '\'',
+				'(', ')', '{', '}', '[', ']'
+			};
+
+			foreach (var symbol in targetSymbols)
+			{
+				subString = subString.Replace(symbol, '\0');
+			}
+
+			if (subString.Contains('\x0020'))
+			{
+				subString = subString.Replace('\x0020', '\n');
+			}
+
+			return subString;
+		}
+
 
 		private void OutputAllDataFromTextFile(string[] dataStringsFromTextFile)
 		{
@@ -91,94 +128,6 @@
 		}
 	}
 
-
-	/// <summary>
-	/// dar920910: Класс WordConstructor выполняет роль устройства, которое
-	/// занимается распознаванием слов в тексте.
-	/// </summary>
-	public class WordConstructor
-	{
-		/// <summary>
-		/// dar920910: Метод WordFinder() принимает в качестве аргумента целевой массив,
-		/// который впоследствии обрабатывается с целью поиска существующих слов в тексте.
-		/// </summary>
-		/// <param name="destStrArr">Целевой строковый массив для обработки</param>
-		/// <returns>Метод возвращает строковый массив, состоящий из слов, обнаруженных
-		/// в процессе обработки разбираемого целевого массива.</returns>
-		public string[] WordFinder(string[] destStrArr)
-		{
-			// Объявляем строковую переменную для хранения слов:
-			string result = string.Empty;
-
-			// Объявляем тестовую целочисленную переменную для хранения количества символов: 
-			// int sum = 0; // можно отключить
-
-			// Выполняем циклический обход каждого элемента-строки в исходном строковом массиве:
-			/* с целью преобразования каждой подстроки и создания результирующей строки найденных слов.
-			 * 
-			 * 1. Передаем подстроку destStrArr для обработки методу ToDoWordsV1()
-			 * в качестве аргумента.
-			 * 2. Осуществляем приращение результирующей строки result на величину
-			 * преобразованной строки, которая является результатом обработки подстроки destStrArr,
-			 * возвращенным при вызове метода ToDoWordsV1().
-			 * 
-			 */
-
-			foreach (var destStr in destStrArr) result += ToDoWordsV1(destStr);
-
-			/* Выполняем построение массива существующих слов:
-			 * 
-			 * 1. Объявляем строковый массив res, который будет содержать все слова в целевом тексте.
-			 * 2. Разбиваем с помощью метода Split() текстовую строку result на подстроки,
-			 * разделенные символом новой строки, с помощью чего мы получаем слова в подстроках.
-			 * 3. Инициализируем массив res массивом подстрок, полученным при вызове метода Split().
-			 * 
-			 */
-
-			string[] res = result.Split('\n');
-			return res;
-		}
-
-		/// <summary>
-		/// dar920910: Метод ToDoWordsV1() выполняет операции по замене символов
-		/// в целевой строке, выполняя задачу получения массива слов из целевой строки.
-		/// Это низкоуровневый метод.
-		/// </summary>
-		/// <param name="subString"></param>
-		/// <returns></returns>
-		private string ToDoWordsV1(string subString)
-		{
-			// Объявляем массив "запретных" символов и выполняем его инициализацию "запретными" символами.
-			// "Запретные" символы - это символы, которые НЕ должны присутствовать в результирующем массиве слов.
-
-			char[] symbols = 
-			{
-				'.', ',', ':', ';',
-				'!', '?', '%', '$',
-				'#', '@', '&', '~',
-				'*', '/', '+', '/',
-				'\\', '|', '^', '"', '\'',
-				'(', ')', '{', '}', '[', ']'
-			};
-
-			/* Циклический обход массива запретных символов.
-			 * Если обрабатываемая строка содержит "запретный" символ,
-			 * мы просто выполняем замену этого символа на пустой символ.
-			 */
-
-			foreach (var symb in symbols)
-			{
-				subString = subString.Replace(symb, '\0');
-			}
-
-			// Проверка и замена всех пробелов на символы перевода строки:
-
-			if (subString.Contains('\x0020'))
-				subString = subString.Replace('\x0020', '\n');
-
-			return subString;
-		}
-	}
 
 	/// <summary>
 	/// dar920910: Структура, содержащая название и количество вхождений "супер-слова".
