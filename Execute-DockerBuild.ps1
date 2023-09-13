@@ -1,0 +1,1 @@
+docker build --file Dockerfile --tag text_words_search .
