@@ -1,0 +1,18 @@
+@page "/textcontent"
+
+<div>
+    <h2>Text Content</h2>
+    <hr>
+    <a class="btn btn-primary" href="/">Return to the Home Page</a>
+</div>
+<hr>
+<div>
+@for(int @index = 0; @index < @DataStore.ContentStringsFromTextFile.Length; @index++)
+{
+    <div>
+        <h4>INDEX: @index</h4>
+        <p>@DataStore.ContentStringsFromTextFile[@index]</p>
+    </div>
+    <hr>
+}
+</div>

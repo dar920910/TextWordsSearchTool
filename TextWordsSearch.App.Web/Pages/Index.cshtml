@@ -1,16 +1,19 @@
 ﻿@page
 @model IndexModel
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
-@{
-    ViewData["Title"] = "TextWordsSearch";
-}
 
-<div class="text-center">
-    <h1 class="display-4">Welcome to TextWordsSearch!</h1>
-    <form method="post">
-        <textarea asp-for="TargetText" cols="30" rows="10">Input a Text</textarea>
-        <input asp-for="TargetWord" type="text" />
-        <input type="submit" />
+<div>
+    <h1>Welcome to the @ViewData["Title"]!</h1>
+</div>
+<div>
+    <form asp-page-handler="UploadTextFile" method="POST" enctype="multipart/form-data">
+        <div class="input-group mb-3">
+            <input asp-for="Upload" type="file" class="form-control"/>
+            <label class="input-group-text">Upload a Local Text File</label>
+        </div>
+        <div>
+            <input type="submit" class="btn btn-primary" value="Parse the Uploaded File">
+            <a class="btn btn-primary" href="/textcontent">Show Text Content from the Uploaded File</a>
+        </div>
     </form>
-    <h2>Count = @Model.WordCountInText</h2>
 </div>

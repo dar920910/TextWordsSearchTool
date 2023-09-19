@@ -6,29 +6,46 @@ namespace TextWordsSearch.App.Web.Pages;
 
 public class IndexModel : PageModel
 {
-    private readonly ILogger<IndexModel> _logger;
+    private IWebHostEnvironment _Environment;
+    private readonly string _UploadsFolderName;
 
-    public IndexModel(ILogger<IndexModel> logger)
+    public IndexModel(IWebHostEnvironment environment)
     {
-        _logger = logger;
+        _Environment = environment;
+
+        _UploadsFolderName = Path.Combine(_Environment.WebRootPath, "uploads");
+        if (Directory.Exists(_UploadsFolderName) is false)
+        {
+            Directory.CreateDirectory(_UploadsFolderName);
+        }
     }
 
     public void OnGet()
     {
-
+        ViewData["Title"] = "TextWordsSearchTool";
     }
 
     [BindProperty]
-    public string TargetText { get; set; }
+    public IFormFile? Upload { get; set; }
 
-    [BindProperty]
-    public string TargetWord { get; set; }
-
-    public uint WordCountInText { get; set; }
-
-    public IActionResult OnPost()
+    public async Task OnPostUploadTextFileAsync()
     {
-        WordCountInText = TextWordsCounter.GetWordCountInText(TargetWord, TargetText);
-        return Page();
+        if (ModelState.IsValid)
+        {
+            if (Upload is not null)
+            {
+                string uploadFilePath = Path.Combine(_UploadsFolderName, Upload.FileName);
+
+                using (FileStream fileStream = new(uploadFilePath, FileMode.Create))
+                {
+                    await Upload.CopyToAsync(fileStream);
+                }
+
+                if (System.IO.File.Exists(uploadFilePath))
+                {
+                    DataStore.ContentStringsFromTextFile = System.IO.File.ReadAllLines(uploadFilePath);
+                }
+            }
+        }
     }
 }
