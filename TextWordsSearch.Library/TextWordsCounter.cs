@@ -1,4 +1,12 @@
-﻿namespace TextWordsSearch.Library;
+﻿//-----------------------------------------------------------------------
+// <copyright file="TextWordsCounter.cs" company="Demo Projects Workshop">
+//     Copyright (c) Demo Projects Workshop. All rights reserved.
+// </copyright>
+//-----------------------------------------------------------------------
+
+#pragma warning disable SA1600 // ElementsMustBeDocumented
+
+namespace TextWordsSearch.Library;
 
 public static class TextWordsCounter
 {

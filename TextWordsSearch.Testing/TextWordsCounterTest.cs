@@ -1,6 +1,14 @@
-using TextWordsSearch.Library;
+//-----------------------------------------------------------------------
+// <copyright file="TextWordsCounterTest.cs" company="Demo Projects Workshop">
+//     Copyright (c) Demo Projects Workshop. All rights reserved.
+// </copyright>
+//-----------------------------------------------------------------------
+
+#pragma warning disable SA1600 // ElementsMustBeDocumented
 
 namespace TextWordsSearch.Testing;
+
+using TextWordsSearch.Library;
 
 public class TextWordsCounterTest
 {

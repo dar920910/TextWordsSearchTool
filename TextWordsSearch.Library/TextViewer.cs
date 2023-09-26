@@ -1,148 +1,151 @@
-﻿namespace TextWordsSearch.Library
+﻿//-----------------------------------------------------------------------
+// <copyright file="TextViewer.cs" company="Demo Projects Workshop">
+//     Copyright (c) Demo Projects Workshop. All rights reserved.
+// </copyright>
+//-----------------------------------------------------------------------
+
+#pragma warning disable SA1600 // ElementsMustBeDocumented
+
+namespace TextWordsSearch.Library;
+
+public class TextViewer
 {
-	public class TextViewer
-	{
-		private readonly string _FilePath;
+    private readonly string textFilePath;
+    private readonly StreamWriter writer;
 
-		private readonly StreamWriter _LogWriter;
+    public TextViewer(string dataTextFilePath)
+    {
+        this.writer = new StreamWriter(
+            Path.Combine(Directory.GetCurrentDirectory(), $"results.log"));
 
-		public TextViewer(string dataTextFilePath)
-		{
-			_LogWriter = new StreamWriter(
-				Path.Combine(Directory.GetCurrentDirectory(), $"results.log"));
+        if (File.Exists(dataTextFilePath))
+        {
+            this.writer.WriteLine($"[{DateTime.Now}] SUCCESS: File {dataTextFilePath} was successfully detected.");
+            this.textFilePath = dataTextFilePath;
+        }
+        else
+        {
+            this.writer.WriteLine($"[{DateTime.Now}] ERROR: File {dataTextFilePath} was not detected!");
+        }
+    }
 
-			if (File.Exists(dataTextFilePath))
-			{
-				_LogWriter.WriteLine($"[{DateTime.Now}] SUCCESS: File {dataTextFilePath} was successfully detected.");
-				_FilePath = dataTextFilePath;
-			}
-			else
-			{
-				_LogWriter.WriteLine($"[{DateTime.Now}] ERROR: File {dataTextFilePath} was not detected!");
-			}
-		}
+    public void ReadFileContent()
+    {
+        this.writer.WriteLine($"[{DateTime.Now}] INFO: Start reading data from the text file ...");
+        string[] dataStringsFromTextFile = File.ReadAllLines(this.textFilePath);
+        this.OutputAllDataFromTextFile(dataStringsFromTextFile);
 
-		public void ReadFileContent()
-		{
-			_LogWriter.WriteLine($"[{DateTime.Now}] INFO: Start reading data from the text file ...");
-			string[] dataStringsFromTextFile = File.ReadAllLines(_FilePath);
-			OutputAllDataFromTextFile(dataStringsFromTextFile);
+        string[] detectedTextWords = FindAllTextWords(dataStringsFromTextFile);
+        this.OutputDetectedWords(detectedTextWords);
 
-			string[] detectedTextWords = FindAllTextWords(dataStringsFromTextFile);
-			OutputDetectedWords(detectedTextWords);
+        (string Value, int Count) resultSuperWord = FindSuperWord(detectedTextWords);
+        this.OutputSuperWord(resultSuperWord);
+        this.writer.Close();
+    }
 
-			(string Value, int Count) resultSuperWord = FindSuperWord(detectedTextWords);
-			OutputSuperWord(resultSuperWord);
-			_LogWriter.Close();
-		}
+    private static string[] FindAllTextWords(string[] dataStringsFromTextFile)
+    {
+        string result = string.Empty;
 
+        foreach (string dataString in dataStringsFromTextFile)
+        {
+            result += GetSubstringWithTextWords(dataString);
+        }
 
-		private static string[] FindAllTextWords(string[] dataStringsFromTextFile)
-		{
-			string result = string.Empty;
+        return result.Split('\n');
+    }
 
-			foreach (string dataString in dataStringsFromTextFile)
-			{
-				result += GetSubstringWithTextWords(dataString);
-			}
+    private static string GetSubstringWithTextWords(string subString)
+    {
+        char[] targetSymbols =
+        {
+                '.', ',', ':', ';',
+                '!', '?', '%', '$',
+                '#', '@', '&', '~',
+                '*', '/', '+', '/',
+                '\\', '|', '^', '"', '\'',
+                '(', ')', '{', '}', '[', ']',
+        };
 
-			return result.Split('\n');
-		}
+        foreach (var symbol in targetSymbols)
+        {
+            subString = subString.Replace(symbol, '\0');
+        }
 
-		private static string GetSubstringWithTextWords(string subString)
-		{
-			char[] targetSymbols = 
-			{
-				'.', ',', ':', ';',
-				'!', '?', '%', '$',
-				'#', '@', '&', '~',
-				'*', '/', '+', '/',
-				'\\', '|', '^', '"', '\'',
-				'(', ')', '{', '}', '[', ']'
-			};
+        if (subString.Contains('\x0020'))
+        {
+            subString = subString.Replace('\x0020', '\n');
+        }
 
-			foreach (var symbol in targetSymbols)
-			{
-				subString = subString.Replace(symbol, '\0');
-			}
+        return subString;
+    }
 
-			if (subString.Contains('\x0020'))
-			{
-				subString = subString.Replace('\x0020', '\n');
-			}
+    private static (string Value, int Count) FindSuperWord(string[] detectedTextWords)
+    {
+        string superWordValue = string.Empty;
+        int superWordCount = 0;
 
-			return subString;
-		}
+        int[] wordsNumbers = new int[detectedTextWords.Length];
 
-		private static (string Value, int Count) FindSuperWord(string[] detectedTextWords)
-		{
-			string superWordValue = string.Empty;
-			int superWordCount = 0;
+        for (int i = 0; i < detectedTextWords.Length; i++)
+        {
+            int currentWordCount = 0;
 
-			int[] wordsNumbers = new int[detectedTextWords.Length];
+            foreach (var word in detectedTextWords)
+            {
+                if (word.Equals(detectedTextWords[i]))
+                {
+                    currentWordCount++;
+                }
+            }
 
-			for (int i = 0; i < detectedTextWords.Length; i++)
-			{
-				int currentWordCount = 0;
+            wordsNumbers[i] = currentWordCount;
 
-				foreach (var word in detectedTextWords)
-				{
-					if (word.Equals(detectedTextWords[i]))
-					{
-						currentWordCount++;
-					}
-				}
+            if (currentWordCount > superWordCount)
+            {
+                superWordValue = detectedTextWords[i].ToUpper();
+                superWordCount = currentWordCount;
+            }
+        }
 
-				wordsNumbers[i] = currentWordCount;
+        return (Value: superWordValue, Count: superWordCount);
+    }
 
-				if (currentWordCount > superWordCount)
-				{
-					superWordValue = detectedTextWords[i].ToUpper();
-					superWordCount = currentWordCount;
-				}
-			}
+    private static string GetOutputTextDelimiter()
+    {
+        const byte delimiterSize = 100;
+        const char delimiterChar = '=';
+        return new string(delimiterChar, delimiterSize);
+    }
 
-			return (Value: superWordValue, Count: superWordCount);
-		}
+    private void OutputAllDataFromTextFile(string[] dataStringsFromTextFile)
+    {
+        this.writer.WriteLine(GetOutputTextDelimiter());
+        this.writer.WriteLine($"\n[{DateTime.Now}] INFO: Text Data from the Loaded File:\n");
 
+        foreach (string dataString in dataStringsFromTextFile)
+        {
+            this.writer.WriteLine(dataString);
+        }
+    }
 
-		private void OutputAllDataFromTextFile(string[] dataStringsFromTextFile)
-		{
-			_LogWriter.WriteLine(GetOutputTextDelimiter());
-			_LogWriter.WriteLine($"\n[{DateTime.Now}] INFO: Text Data from the Loaded File:\n");
+    private void OutputDetectedWords(string[] detectedTextWords)
+    {
+        this.writer.WriteLine(GetOutputTextDelimiter());
+        this.writer.WriteLine($"\n[{DateTime.Now}] INFO: Detected Text Words in the Loaded File:\n");
 
-			foreach (string dataString in dataStringsFromTextFile)
-			{
-				_LogWriter.WriteLine(dataString);
-			}
-		}
+        for (int i = 0; i < detectedTextWords.Length; i++)
+        {
+            this.writer.WriteLine($"   i = {i}: {detectedTextWords[i]}");
+        }
 
-		private void OutputDetectedWords(string[] detectedTextWords)
-		{
-			_LogWriter.WriteLine(GetOutputTextDelimiter());
-			_LogWriter.WriteLine($"\n[{DateTime.Now}] INFO: Detected Text Words in the Loaded File:\n");
+        this.writer.WriteLine();
+    }
 
-			for (int i = 0; i < detectedTextWords.Length; i++)
-			{
-				_LogWriter.WriteLine($"   i = {i}: {detectedTextWords[i]}");
-			}
-
-			_LogWriter.WriteLine();
-		}
-
-		private void OutputSuperWord((string Value, int Count) super)
-		{
-			_LogWriter.WriteLine(GetOutputTextDelimiter());
-			string outputResult = $"\n[{DateTime.Now}] INFO: SuperWord: '{super.Value}' | Count: {super.Count}.\n";
-			_LogWriter.WriteLine(outputResult);
-		}
-
-		private static string GetOutputTextDelimiter()
-		{
-			const byte delimiterSize = 100;
-			const char delimiterChar = '=';
-
-			return new string(delimiterChar, delimiterSize);
-		}
-	}
+    private void OutputSuperWord((string Value, int Count) super)
+    {
+        this.writer.WriteLine(GetOutputTextDelimiter());
+        string outputResult = $"\n[{DateTime.Now}] INFO: SuperWord: '{super.Value}' | Count: {super.Count}.\n";
+        this.writer.WriteLine(outputResult);
+    }
 }
