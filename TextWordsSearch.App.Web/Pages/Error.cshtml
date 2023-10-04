@@ -1,9 +1,13 @@
-﻿@page
+﻿@page "/error"
 @model ErrorModel
 @{
     ViewData["Title"] = "Error";
 }
 
+<div class="row">
+    <h2>Error: Cannot read a upload file. Probably, you didn't upload a text file.</h2>
+</div>
+<hr>
 <h1 class="text-danger">Error.</h1>
 <h2 class="text-danger">An error occurred while processing your request.</h2>
 
@@ -24,3 +28,7 @@
     For local debugging, enable the <strong>Development</strong> environment by setting the <strong>ASPNETCORE_ENVIRONMENT</strong> environment variable to <strong>Development</strong>
     and restarting the app.
 </p>
+<hr>
+<div class="row">
+    <a class="btn btn-primary" href="/">Return to the Home Page</a>
+</div>

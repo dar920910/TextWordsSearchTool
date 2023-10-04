@@ -2,18 +2,18 @@
 @model IndexModel
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
-<div>
-    <h1>Welcome to the @ViewData["Title"]!</h1>
-</div>
-<div>
+<div class="container text-center">
+    <h1 class="display-2">Welcome to the @ViewData["Title"]!</h1>
+    <hr>
     <form asp-page-handler="UploadTextFile" method="POST" enctype="multipart/form-data">
         <div class="input-group mb-3">
             <input asp-for="Upload" type="file" class="form-control"/>
             <label class="input-group-text">Upload a Local Text File</label>
         </div>
-        <div>
+        <br>
+        <div class="row">
             <input type="submit" class="btn btn-primary" value="Parse the Uploaded File">
-            <a class="btn btn-primary" href="/textcontent">Show Text Content from the Uploaded File</a>
         </div>
     </form>
+    <hr>
 </div>

@@ -35,24 +35,27 @@ public class IndexModel : PageModel
         this.ViewData["Title"] = "TextWordsSearchTool";
     }
 
-    public async Task OnPostUploadTextFileAsync()
+    public async Task<IActionResult> OnPostUploadTextFileAsync()
     {
-        if (this.ModelState.IsValid)
+        if (this.Upload is not null)
         {
-            if (this.Upload is not null)
+            string uploadFilePath = Path.Combine(this.uploadsFolderName, this.Upload.FileName);
+
+            using (FileStream fileStream = new (uploadFilePath, FileMode.Create))
             {
-                string uploadFilePath = Path.Combine(this.uploadsFolderName, this.Upload.FileName);
-
-                using (FileStream fileStream = new (uploadFilePath, FileMode.Create))
-                {
-                    await this.Upload.CopyToAsync(fileStream);
-                }
-
-                if (System.IO.File.Exists(uploadFilePath))
-                {
-                    DataStore.ContentStringsFromTextFile = System.IO.File.ReadAllLines(uploadFilePath);
-                }
+                await this.Upload.CopyToAsync(fileStream);
             }
+
+            if (System.IO.File.Exists(uploadFilePath))
+            {
+                DataStore.ContentStringsFromTextFile = System.IO.File.ReadAllLines(uploadFilePath);
+            }
+
+            return this.RedirectToPage("/textcontent");
+        }
+        else
+        {
+            return this.RedirectToPage("/error");
         }
     }
 }
