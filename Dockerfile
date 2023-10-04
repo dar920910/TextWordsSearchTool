@@ -16,3 +16,5 @@ ENV ASPNETCORE_ENVIRONMENT=Production \
     ASPNETCORE_Kestrel__Certificates__Default__Password="Text_Words_Search_2023!"
 
 WORKDIR /usr/local/bin/TextWordsSearchTool
+COPY Examples/ Examples/
+COPY Scripts/ .

@@ -6,8 +6,23 @@
 
 using TextWordsSearch.Library;
 
-string customTextFile = Path.Combine(
-    Directory.GetCurrentDirectory(), "TestDataExamples", "test_loremipsum.txt");
+try
+{
+    string customTextFile = args[0];
 
-TextViewer textViewer = new (customTextFile);
-textViewer.ReadFileContent();
+    if (File.Exists(customTextFile))
+    {
+        Console.WriteLine($"[INFO] Detected the custom file: {customTextFile}");
+
+        TextViewer textViewer = new (customTextFile);
+        textViewer.ReadFileContent();
+    }
+    else
+    {
+        Console.WriteLine($"[ERROR] Cannot detect the custom file: {customTextFile}");
+    }
+}
+catch (IndexOutOfRangeException)
+{
+    Console.WriteLine($"[ERROR] You should pass a custom text file as the one argument to the program.");
+}
