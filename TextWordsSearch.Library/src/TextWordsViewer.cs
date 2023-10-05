@@ -32,8 +32,12 @@ public class TextWordsViewer
         this.writer.WriteLine($"[{DateTime.Now}] INFO: Start reading data from the text file ...");
 
         string currentTextFileContent = File.ReadAllText(this.textFilePath);
+
         string[] currentTextWords = TextWordsCounter.GetWordsArrayFromTextContent(currentTextFileContent);
+        this.OutputDetectedWords(currentTextWords);
+
         this.detectedTextWords = TextWordsCounter.GetWordsDictionaryFromWordsArray(currentTextWords);
+        this.OutputDetectedWords(this.detectedTextWords);
 
         this.writer.Close();
     }
@@ -57,34 +61,29 @@ public class TextWordsViewer
         return new string(delimiterChar, delimiterSize);
     }
 
-    private void OutputAllDataFromTextFile(string[] dataStringsFromTextFile)
+    private void OutputDetectedWords(string[] words)
     {
         this.writer.WriteLine(GetOutputTextDelimiter());
-        this.writer.WriteLine($"\n[{DateTime.Now}] INFO: Text Data from the Loaded File:\n");
+        this.writer.WriteLine($"\n[{DateTime.Now}] INFO: Output for the Array of Detected Text Words...\n");
 
-        foreach (string dataString in dataStringsFromTextFile)
+        for (int number = 0; number < words.Length; number++)
         {
-            this.writer.WriteLine(dataString);
-        }
-    }
-
-    private void OutputDetectedWords(string[] detectedTextWords)
-    {
-        this.writer.WriteLine(GetOutputTextDelimiter());
-        this.writer.WriteLine($"\n[{DateTime.Now}] INFO: Detected Text Words in the Loaded File:\n");
-
-        for (int i = 0; i < detectedTextWords.Length; i++)
-        {
-            this.writer.WriteLine($"   i = {i}: {detectedTextWords[i]}");
+            this.writer.WriteLine($"   i = {number}: {words[number]}");
         }
 
         this.writer.WriteLine();
     }
 
-    private void OutputSuperWord((string Value, int Count) super)
+    private void OutputDetectedWords(Dictionary<string, uint> words)
     {
         this.writer.WriteLine(GetOutputTextDelimiter());
-        string outputResult = $"\n[{DateTime.Now}] INFO: SuperWord: '{super.Value}' | Count: {super.Count}.\n";
-        this.writer.WriteLine(outputResult);
+        this.writer.WriteLine($"\n[{DateTime.Now}] INFO: Output for the Dictionary of Detected Text Words...\n");
+
+        foreach (string word in words.Keys)
+        {
+            this.writer.WriteLine($"Word: '{word}' | Count: '{words[word]}'");
+        }
+
+        this.writer.WriteLine();
     }
 }
