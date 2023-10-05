@@ -1,22 +1,35 @@
 @page "/textcontent"
-
 <div class="container text-center">
     <h2 class="display-4">Explore Content from the Uploaded Text File</h2>
     <hr>
+    <div class="row">
+
+        <div class="col-sm-6">
+            <form action="/maxresult" method="GET">
+                <button class="btn btn-primary" >Show Words with the Maximum Count in the Content</button>
+            </form>
+        </div>
+        <div class="col-sm-6">
+            <form action="/minresult" method="GET">
+                <input type="submit" class="btn btn-primary" value="Show Words with the Minimum Count in the Content"/>
+            </form>
+        </div>
+    </div>
+    <br>
     <div class="row">
         <a class="btn btn-primary" href="/">Return to the Home Page</a>
     </div>
 </div>
 <hr>
 <div class="container">
-@for(int @index = 0; @index < @DataStore.ContentStringsFromTextFile.Length; @index++)
+@for(int @index = 0; @index < @DataStore.CurrentInstance?.ContentStringsFromTextFile.Length; @index++)
 {
     <div class="row">
         <div class="col-sm-1 text-center">
             <h6>@index</h6>
         </div>
         <div class="col-sm-11 text-left">
-            <p>@DataStore.ContentStringsFromTextFile[@index]</p>
+            <p>@DataStore.CurrentInstance?.ContentStringsFromTextFile[@index]</p>
         </div>
     </div>
 }

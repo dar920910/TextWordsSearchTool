@@ -48,7 +48,7 @@ public class IndexModel : PageModel
 
             if (System.IO.File.Exists(uploadFilePath))
             {
-                DataStore.ContentStringsFromTextFile = System.IO.File.ReadAllLines(uploadFilePath);
+                DataStore.Create(uploadFilePath);
             }
 
             return this.RedirectToPage("/textcontent");

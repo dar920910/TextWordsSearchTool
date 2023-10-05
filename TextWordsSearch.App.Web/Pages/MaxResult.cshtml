@@ -1,0 +1,47 @@
+@page "/maxresult"
+
+<div class="container text-center">
+    <h2 class="display-4">Explore Analysis Results of the Content from Your Text File</h2>
+    <hr>
+    <div class="row">
+        <a class="btn btn-primary" href="/textcontent">Return to the Text Content Page</a>
+    </div>
+</div>
+<hr>
+<div class="container">
+    <h4>Maximum Entry Count of Text Words: @DataStore.MaximumWordsCountInfo.Key</h4>
+    <h5>These are the following text words from your text file:</h5>
+    @foreach (string word in @DataStore.MaximumWordsCountInfo.Value)
+    {
+        <p>@word </p>
+    }
+</div>
+<hr>
+<div class="container">
+    <h4>Look at the Text Words List Ordered By Descending:<</h4>
+    <br>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th scope="col" style="color: white; background-color: black;">Count</th>
+                <th scope="col" style="color: white; background-color: black;">Text Word</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (KeyValuePair<uint, List<string>> textWordInfo in @DataStore.WordsOrderedByDescending)
+            {
+                @foreach (string word in @textWordInfo.Value)
+                {
+                    <tr>
+                        <td>@textWordInfo.Key</td>
+                        <td>@word</td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>
+<hr>
+<div class="row">
+    <a class="btn btn-primary" href="/textcontent">Return to the Text Content Page</a>
+</div>
