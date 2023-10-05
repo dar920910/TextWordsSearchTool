@@ -10,20 +10,31 @@ namespace TextWordsSearch.Library;
 
 public static class TextWordsCounter
 {
-    public static uint GetWordCountInText(string word, string text)
+    public static string[] GetWordsArrayFromTextContent(string textContent)
     {
-        // Start implementation - use only strings separated by spaces.
-        string[] words = text.Split(' ');
+        List<string> detectedWords = new ();
+        List<char> wordCharacters = new ();
 
-        uint count = 0;
-        foreach (string elem in words)
+        CharEnumerator enumerator = textContent.GetEnumerator();
+        while (enumerator.MoveNext())
         {
-            if (elem.Equals(word))
+            char symbol = enumerator.Current;
+
+            if (char.IsWhiteSpace(symbol) || char.IsPunctuation(symbol) || char.IsControl(symbol))
             {
-                count++;
+                if (wordCharacters.Count != 0)
+                {
+                    string word = new (wordCharacters.ToArray());
+                    detectedWords.Add(word);
+                    wordCharacters.Clear();
+                }
+            }
+            else
+            {
+               wordCharacters.Add(symbol);
             }
         }
 
-        return count;
+        return detectedWords.ToArray();
     }
 }
