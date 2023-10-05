@@ -8,10 +8,20 @@
 
 ## :sound: About the Project History
 
-This project implements a tool to find *entries of text words* in a custom text file.
+This project implements a tool to find **entry count of text words** in a custom text file.
 
 Project's idea was taken from a test project created me when passing an interview in 2019.
 I added more features to its initial idea and extended project's codebase infrastructure.
+
+## :dart: Planned Further Improvements
+
+There are important areas which should be improved when further development of this project:
+
+:collision: Implement a feature of searching for text words by a custom seacrh pattern with options (matching a whole word, a character case, a regular expression and etc.)
+
+:collision: Implement a feature of saving location context for a detected word (position number in a text file and etc. like features of seacrh in modern text editors)
+
+:collision: Improve logging via more detailed writing results of parsing operations.
 
 ## :question: About the Repository Structure
 
@@ -44,7 +54,7 @@ The repository also contains example files to testing the app. You may try these
 2. Open either <https://localhost:5002> or <http://localhost:5001> URL in your web browser.
 3. Upload a text file and then click the "Read the Uploaded File" button on the webpage.
 4. Select any action to execute parsing the uploaded text file.
-5. Investigate analysis results of this tex file on the webpage.
+5. Investigate analysis results of this text file on the webpage.
 
 ### :computer: Using Project's Console Application
 
