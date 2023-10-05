@@ -8,7 +8,6 @@
 
 namespace TextWordsSearch.Testing;
 
-using System.Collections.Immutable;
 using TextWordsSearch.Library;
 
 public class TextWordsCounterTest
@@ -320,5 +319,107 @@ public class TextWordsCounterTest
         };
 
         Assert.That(actualSortedWords, Is.EqualTo(expectedSortedWords));
+    }
+
+    [Test]
+    public void GetInfoAboutMaximumEntryCountOfWordsInText_TestCase1()
+    {
+        Dictionary<string, uint> wordsDictionary = new ()
+        {
+            { "four", 4 },
+            { "two", 2 },
+            { "one", 1 },
+            { "three", 3 },
+            { "five", 5 },
+            { "nine", 9 },
+            { "seven", 7 },
+            { "six", 6 },
+            { "eigth", 8 },
+        };
+
+        KeyValuePair<uint, List<string>> actualInfo =
+            TextWordsCounter.GetInfoAboutMaximumEntryCountOfWordsInText(wordsDictionary);
+
+        KeyValuePair<uint, List<string>> expectedInfo =
+            new (key: 9, value: new List<string>() { "nine" });
+
+        Assert.That(actualInfo, Is.EqualTo(expectedInfo));
+    }
+
+    [Test]
+    public void GetInfoAboutMaximumEntryCountOfWordsInText_TestCase2()
+    {
+        Dictionary<string, uint> wordsDictionary = new ()
+        {
+            { "value_0", 100 },
+            { "value_1", 25 },
+            { "value_2", 100 },
+            { "value_3", 50 },
+            { "value_4", 100 },
+            { "value_5", 75 },
+            { "value_6", 100 },
+            { "value_7", 75 },
+            { "value_8", 100 },
+            { "value_9", 50 },
+        };
+
+        KeyValuePair<uint, List<string>> actualInfo =
+            TextWordsCounter.GetInfoAboutMaximumEntryCountOfWordsInText(wordsDictionary);
+
+        KeyValuePair<uint, List<string>> expectedInfo =
+            new (key: 100, value: new List<string>() { "value_0", "value_2", "value_4", "value_6", "value_8" });
+
+        Assert.That(actualInfo, Is.EqualTo(expectedInfo));
+    }
+
+    [Test]
+    public void GetInfoAboutMinimumEntryCountOfWordsInText_TestCase1()
+    {
+        Dictionary<string, uint> wordsDictionary = new ()
+        {
+            { "four", 4 },
+            { "two", 2 },
+            { "one", 1 },
+            { "three", 3 },
+            { "five", 5 },
+            { "nine", 9 },
+            { "seven", 7 },
+            { "six", 6 },
+            { "eigth", 8 },
+        };
+
+        KeyValuePair<uint, List<string>> actualInfo =
+            TextWordsCounter.GetInfoAboutMinimumEntryCountOfWordsInText(wordsDictionary);
+
+        KeyValuePair<uint, List<string>> expectedInfo =
+            new (key: 1, value: new List<string>() { "one" });
+
+        Assert.That(actualInfo, Is.EqualTo(expectedInfo));
+    }
+
+    [Test]
+    public void GetInfoAboutMinimumEntryCountOfWordsInText_TestCase2()
+    {
+        Dictionary<string, uint> wordsDictionary = new ()
+        {
+            { "value_0", 100 },
+            { "value_1", 75 },
+            { "value_2", 50 },
+            { "value_3", 25 },
+            { "value_4", 25 },
+            { "value_5", 50 },
+            { "value_6", 75 },
+            { "value_7", 100 },
+            { "value_8", 25 },
+            { "value_9", 25 },
+        };
+
+        KeyValuePair<uint, List<string>> actualInfo =
+            TextWordsCounter.GetInfoAboutMinimumEntryCountOfWordsInText(wordsDictionary);
+
+        KeyValuePair<uint, List<string>> expectedInfo =
+            new (key: 25, value: new List<string>() { "value_3", "value_4", "value_8", "value_9" });
+
+        Assert.That(actualInfo, Is.EqualTo(expectedInfo));
     }
 }

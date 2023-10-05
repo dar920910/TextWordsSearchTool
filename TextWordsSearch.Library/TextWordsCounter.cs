@@ -61,6 +61,42 @@ public static class TextWordsCounter
         return uniqueWords;
     }
 
+    public static KeyValuePair<uint, List<string>> GetInfoAboutMaximumEntryCountOfWordsInText(
+        Dictionary<string, uint> words)
+    {
+        Dictionary<uint, List<string>> wordsCountDictionary = CreateWordsCountDictionary(words);
+        uint maximumCountOfWords = uint.MinValue;
+
+        foreach (uint currentWordCount in wordsCountDictionary.Keys)
+        {
+            if (currentWordCount > maximumCountOfWords)
+            {
+                maximumCountOfWords = currentWordCount;
+            }
+        }
+
+        return new KeyValuePair<uint, List<string>>(
+            key: maximumCountOfWords, value: wordsCountDictionary[maximumCountOfWords]);
+    }
+
+    public static KeyValuePair<uint, List<string>> GetInfoAboutMinimumEntryCountOfWordsInText(
+        Dictionary<string, uint> words)
+    {
+        Dictionary<uint, List<string>> wordsCountDictionary = CreateWordsCountDictionary(words);
+        uint minimumCountOfWords = uint.MaxValue;
+
+        foreach (uint currentWordCount in wordsCountDictionary.Keys)
+        {
+            if (currentWordCount < minimumCountOfWords)
+            {
+                minimumCountOfWords = currentWordCount;
+            }
+        }
+
+        return new KeyValuePair<uint, List<string>>(
+            key: minimumCountOfWords, value: wordsCountDictionary[minimumCountOfWords]);
+    }
+
     public static List<KeyValuePair<uint, List<string>>> GetSortedWordsByAscending(Dictionary<string, uint> words)
     {
         Dictionary<uint, List<string>> wordsCountDictionary = CreateWordsCountDictionary(words);
