@@ -60,4 +60,32 @@ public static class TextWordsCounter
 
         return uniqueWords;
     }
+
+    public static List<KeyValuePair<uint, List<string>>> GetSortedWordsByAscending(Dictionary<string, uint> words)
+    {
+        Dictionary<uint, List<string>> wordsCountDictionary = new ();
+
+        foreach (string key in words.Keys)
+        {
+            uint wordsCount = words[key];
+
+            if (wordsCountDictionary.ContainsKey(wordsCount))
+            {
+                wordsCountDictionary[wordsCount].Add(key);
+            }
+            else
+            {
+                wordsCountDictionary.Add(key: wordsCount, value: new List<string>() { key });
+            }
+        }
+
+        SortedDictionary<uint, List<string>> sortedWords = new (wordsCountDictionary);
+        IOrderedEnumerable<KeyValuePair<uint, List<string>>> orderedWords = sortedWords.OrderBy(key => key.Key);
+        foreach (KeyValuePair<uint, List<string>> pair in orderedWords)
+        {
+            pair.Value.Sort();
+        }
+
+        return orderedWords.ToList();
+    }
 }
