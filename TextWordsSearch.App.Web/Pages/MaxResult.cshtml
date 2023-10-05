@@ -1,24 +1,21 @@
 @page "/maxresult"
 
 <div class="container text-center">
-    <h2 class="display-4">Explore Analysis Results of the Content from Your Text File</h2>
+    <h2 class="display-4">Explore Results of Parsing the Text Content</h2>
     <hr>
     <div class="row">
         <a class="btn btn-primary" href="/textcontent">Return to the Text Content Page</a>
     </div>
 </div>
 <hr>
-<div class="container">
-    <h4>Maximum Entry Count of Text Words: @DataStore.MaximumWordsCountInfo.Key</h4>
-    <h5>These are the following text words from your text file:</h5>
-    @foreach (string word in @DataStore.MaximumWordsCountInfo.Value)
-    {
-        <p>@word </p>
-    }
+<div class="container text-center">
+    <h4 class="display-5">Maximum Entry Count of Text Words:</h4>
+    <br>
+    <h4 class="display-2">@DataStore.MaximumWordsCountInfo.Key</h4>
 </div>
 <hr>
-<div class="container">
-    <h4>Look at the Text Words List Ordered By Descending:<</h4>
+<div class="container text-center">
+    <h4 class="display-6">Look at the Text Words List Ordered By Descending:</h4>
     <br>
     <table class="table table-bordered">
         <thead>
@@ -33,8 +30,21 @@
                 @foreach (string word in @textWordInfo.Value)
                 {
                     <tr>
-                        <td>@textWordInfo.Key</td>
-                        <td>@word</td>
+                        @if (@textWordInfo.Key == @DataStore.MaximumWordsCountInfo.Key)
+                        {
+                            <td style="background-color: lightgreen;">@textWordInfo.Key</td>
+                            <td style="background-color: lightgreen;">@word</td>
+                        }
+                        else if (@textWordInfo.Key == @DataStore.MinimumWordsCountInfo.Key)
+                        {
+                            <td style="background-color: lightcoral;">@textWordInfo.Key</td>
+                            <td style="background-color: lightcoral;">@word</td>
+                        }
+                        else
+                        {
+                            <td style="background-color: gray;">@textWordInfo.Key</td>
+                            <td style="background-color: gray;">@word</td>
+                        }
                     </tr>
                 }
             }
