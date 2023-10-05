@@ -37,4 +37,27 @@ public static class TextWordsCounter
 
         return detectedWords.ToArray();
     }
+
+    public static Dictionary<string, uint> GetWordsDictionaryFromWordsArray(string[] words)
+    {
+        List<string> sourceWords = words.ToList();
+
+        Dictionary<string, uint> uniqueWords = new ();
+
+        for (int index = 0; index < sourceWords.Count; index++)
+        {
+            string word = sourceWords[index];
+
+            if (uniqueWords.ContainsKey(word))
+            {
+                uniqueWords[word]++;
+            }
+            else
+            {
+                uniqueWords.Add(key: word, value: 1);
+            }
+        }
+
+        return uniqueWords;
+    }
 }

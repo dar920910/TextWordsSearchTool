@@ -64,30 +64,119 @@ public class TextWordsCounterTest
     }
 
     [Test]
-    public void CalculateWordCount_TestCase0()
+    public void GetWordsArrayFromTextContent_TestCase0()
     {
         string[] actualWordsArray = TextWordsCounter.GetWordsArrayFromTextContent(TestContent0);
         Assert.That(actualWordsArray, Is.EqualTo(TestWordsArray0));
     }
 
     [Test]
-    public void CalculateWordCount_TestCase1()
+    public void GetWordsArrayFromTextContent_TestCase1()
     {
         string[] actualWordsArray = TextWordsCounter.GetWordsArrayFromTextContent(TestContent1);
         Assert.That(actualWordsArray, Is.EqualTo(TestWordsArray1));
     }
 
     [Test]
-    public void CalculateWordCount_TestCase2()
+    public void GetWordsArrayFromTextContent_TestCase2()
     {
         string[] actualWordsArray = TextWordsCounter.GetWordsArrayFromTextContent(TestContent2);
         Assert.That(actualWordsArray, Is.EqualTo(TestWordsArray2));
     }
 
     [Test]
-    public void CalculateWordCount_TestCase3()
+    public void GetWordsArrayFromTextContent_TestCase3()
     {
         string[] actualWordsArray = TextWordsCounter.GetWordsArrayFromTextContent(TestContent3);
         Assert.That(actualWordsArray, Is.EqualTo(TestWordsArray3));
+    }
+
+    [Test]
+    public void GetWordsDictionaryFromWordsArray_TestCase1()
+    {
+        string[] detectedWords =
+        {
+            "word1",
+            "word2", "word2",
+            "word3", "word3", "word3",
+            "word4", "word4", "word4", "word4",
+            "word5", "word5", "word5", "word5", "word5",
+        };
+
+        Dictionary<string, uint> actualWordsDictionary =
+            TextWordsCounter.GetWordsDictionaryFromWordsArray(detectedWords);
+
+        Dictionary<string, uint> expectedWordsDictionary = new ()
+        {
+            { "word1", 1 },
+            { "word2", 2 },
+            { "word3", 3 },
+            { "word4", 4 },
+            { "word5", 5 },
+        };
+
+        Assert.That(actualWordsDictionary, Is.EqualTo(expectedWordsDictionary));
+    }
+
+    [Test]
+    public void GetWordsDictionaryFromWordsArray_TestCase2()
+    {
+        string[] detectedWords =
+        {
+            "word5", "word5", "word5", "word5", "word5",
+            "word6", "word6", "word6", "word6",
+            "word7", "word7", "word7",
+            "word8", "word8",
+            "word9",
+        };
+
+        Dictionary<string, uint> actualWordsDictionary =
+            TextWordsCounter.GetWordsDictionaryFromWordsArray(detectedWords);
+
+        Dictionary<string, uint> expectedWordsDictionary = new ()
+        {
+            { "word5", 5 },
+            { "word6", 4 },
+            { "word7", 3 },
+            { "word8", 2 },
+            { "word9", 1 },
+        };
+
+        Assert.That(actualWordsDictionary, Is.EqualTo(expectedWordsDictionary));
+    }
+
+    [Test]
+    public void GetWordsDictionaryFromWordsArray_TestCase3()
+    {
+        string[] detectedWords =
+        {
+            "word1",
+            "word2", "word2",
+            "word3", "word3", "word3",
+            "word4", "word4", "word4", "word4",
+            "word5", "word5", "word5", "word5", "word5",
+            "word6", "word6", "word6", "word6",
+            "word7", "word7", "word7",
+            "word8", "word8",
+            "word9",
+        };
+
+        Dictionary<string, uint> actualWordsDictionary =
+            TextWordsCounter.GetWordsDictionaryFromWordsArray(detectedWords);
+
+        Dictionary<string, uint> expectedWordsDictionary = new ()
+        {
+            { "word1", 1 },
+            { "word2", 2 },
+            { "word3", 3 },
+            { "word4", 4 },
+            { "word5", 5 },
+            { "word6", 4 },
+            { "word7", 3 },
+            { "word8", 2 },
+            { "word9", 1 },
+        };
+
+        Assert.That(actualWordsDictionary, Is.EqualTo(expectedWordsDictionary));
     }
 }
