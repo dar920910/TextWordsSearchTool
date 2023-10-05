@@ -63,29 +63,71 @@ public static class TextWordsCounter
 
     public static List<KeyValuePair<uint, List<string>>> GetSortedWordsByAscending(Dictionary<string, uint> words)
     {
+        Dictionary<uint, List<string>> wordsCountDictionary = CreateWordsCountDictionary(words);
+
+        IOrderedEnumerable<KeyValuePair<uint, List<string>>> orderedWords =
+            OrderWordsCountDictionaryByAscending(wordsCountDictionary);
+
+        return orderedWords.ToList();
+    }
+
+    public static List<KeyValuePair<uint, List<string>>> GetSortedWordsByDescending(Dictionary<string, uint> words)
+    {
+        Dictionary<uint, List<string>> wordsCountDictionary = CreateWordsCountDictionary(words);
+
+        IOrderedEnumerable<KeyValuePair<uint, List<string>>> orderedWords =
+            OrderWordsCountDictionaryByDescending(wordsCountDictionary);
+
+        return orderedWords.ToList();
+    }
+
+    private static Dictionary<uint, List<string>> CreateWordsCountDictionary(Dictionary<string, uint> words)
+    {
         Dictionary<uint, List<string>> wordsCountDictionary = new ();
 
-        foreach (string key in words.Keys)
+        foreach (string currentWord in words.Keys)
         {
-            uint wordsCount = words[key];
+            uint currentWordCount = words[currentWord];
 
-            if (wordsCountDictionary.ContainsKey(wordsCount))
+            if (wordsCountDictionary.ContainsKey(currentWordCount))
             {
-                wordsCountDictionary[wordsCount].Add(key);
+                wordsCountDictionary[currentWordCount].Add(currentWord);
             }
             else
             {
-                wordsCountDictionary.Add(key: wordsCount, value: new List<string>() { key });
+                wordsCountDictionary.Add(key: currentWordCount, value: new () { currentWord });
             }
         }
 
-        SortedDictionary<uint, List<string>> sortedWords = new (wordsCountDictionary);
-        IOrderedEnumerable<KeyValuePair<uint, List<string>>> orderedWords = sortedWords.OrderBy(key => key.Key);
+        return wordsCountDictionary;
+    }
+
+    private static IOrderedEnumerable<KeyValuePair<uint, List<string>>> OrderWordsCountDictionaryByAscending(
+        Dictionary<uint, List<string>> wordsCountDictionary)
+    {
+        IOrderedEnumerable<KeyValuePair<uint, List<string>>> orderedWords =
+            wordsCountDictionary.OrderBy(key => key.Key);
+
         foreach (KeyValuePair<uint, List<string>> pair in orderedWords)
         {
             pair.Value.Sort();
         }
 
-        return orderedWords.ToList();
+        return orderedWords;
+    }
+
+    private static IOrderedEnumerable<KeyValuePair<uint, List<string>>> OrderWordsCountDictionaryByDescending(
+        Dictionary<uint, List<string>> wordsCountDictionary)
+    {
+        IOrderedEnumerable<KeyValuePair<uint, List<string>>> orderedWords =
+            wordsCountDictionary.OrderByDescending(key => key.Key);
+
+        foreach (KeyValuePair<uint, List<string>> pair in orderedWords)
+        {
+            pair.Value.Sort();
+            pair.Value.Reverse();
+        }
+
+        return orderedWords;
     }
 }

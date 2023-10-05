@@ -250,4 +250,75 @@ public class TextWordsCounterTest
 
         Assert.That(actualSortedWords, Is.EqualTo(expectedSortedWords));
     }
+
+    [Test]
+    public void GetSortedWordsListByDescending_TestCase1()
+    {
+        Dictionary<string, uint> wordsDictionary = new ()
+        {
+            { "four", 4 },
+            { "two", 2 },
+            { "one", 1 },
+            { "three", 3 },
+            { "five", 5 },
+            { "nine", 9 },
+            { "seven", 7 },
+            { "six", 6 },
+            { "eigth", 8 },
+        };
+
+        List<KeyValuePair<uint, List<string>>> actualSortedWords =
+            TextWordsCounter.GetSortedWordsByDescending(wordsDictionary);
+
+        List<KeyValuePair<uint, List<string>>> expectedSortedWords = new ()
+        {
+            new (key: 9, value: new List<string>() { "nine" }),
+            new (key: 8, value: new List<string>() { "eigth" }),
+            new (key: 7, value: new List<string>() { "seven" }),
+            new (key: 6, value: new List<string>() { "six" }),
+            new (key: 5, value: new List<string>() { "five" }),
+            new (key: 4, value: new List<string>() { "four" }),
+            new (key: 3, value: new List<string>() { "three" }),
+            new (key: 2, value: new List<string>() { "two" }),
+            new (key: 1, value: new List<string>() { "one" }),
+        };
+
+        Assert.That(actualSortedWords, Is.EqualTo(expectedSortedWords));
+    }
+
+    [Test]
+    public void GetSortedWordsListByDescending_TestCase2()
+    {
+        Dictionary<string, uint> wordsDictionary = new ()
+        {
+            { "four1", 4 },
+            { "four", 4 },
+            { "four2", 4 },
+            { "two1", 2 },
+            { "two", 2 },
+            { "five", 5 },
+            { "five2", 5 },
+            { "five3", 5 },
+            { "five1", 5 },
+            { "three1", 3 },
+            { "three", 3 },
+            { "three2", 3 },
+            { "one", 1 },
+            { "one1", 1 },
+        };
+
+        List<KeyValuePair<uint, List<string>>> actualSortedWords =
+            TextWordsCounter.GetSortedWordsByDescending(wordsDictionary);
+
+        List<KeyValuePair<uint, List<string>>> expectedSortedWords = new ()
+        {
+            new (key: 5, value: new List<string>() { "five3", "five2", "five1", "five" }),
+            new (key: 4, value: new List<string>() { "four2", "four1", "four" }),
+            new (key: 3, value: new List<string>() { "three2", "three1", "three" }),
+            new (key: 2, value: new List<string>() { "two1", "two" }),
+            new (key: 1, value: new List<string>() { "one1", "one", }),
+        };
+
+        Assert.That(actualSortedWords, Is.EqualTo(expectedSortedWords));
+    }
 }
